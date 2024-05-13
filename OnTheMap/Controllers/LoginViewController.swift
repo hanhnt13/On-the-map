@@ -36,7 +36,7 @@ class LoginViewController: BaseViewController {
                 if success {
                     self?.performSegue(withIdentifier: "showMap", sender: nil)
                 } else {
-                    self?.showAlert(message: "Please enter valid credentials.", title: "Login Error")
+                    self?.showAlert(message: error?.localizedDescription ?? "Unknown error", title: "Login Error")
                 }
             }
         }

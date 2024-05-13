@@ -93,10 +93,10 @@ class Services {
                 }
                 return
             }
+            let range = 5..<data.count
+            let newData = data.subdata(in: range)
             do {
                 if apiType == .udacity {
-                    let range = 5..<data.count
-                    let newData = data.subdata(in: range)
                     let responseObject = try JSONDecoder().decode(ResponseType.self, from: newData)
                     DispatchQueue.main.async {
                         completion(responseObject, nil)
@@ -108,6 +108,10 @@ class Services {
                     }
                 }
             } catch {
+                if let apiResponse = try? JSONDecoder().decode(ApiRespone.self, from: newData), apiResponse.status != 200 {
+                    completion(nil, NSError(domain: "", code: apiResponse.status, userInfo: [ NSLocalizedDescriptionKey: apiResponse.error]))
+                    return
+                }
                 DispatchQueue.main.async {
                     completion(nil, error)
                 }

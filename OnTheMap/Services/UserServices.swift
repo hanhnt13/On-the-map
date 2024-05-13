@@ -12,6 +12,11 @@ struct LoginResponse: Codable {
     let session: Session
 }
 
+struct ApiRespone: Codable {
+    let status: Int
+    let error: String
+}
+
 struct UserProfile: Codable {
     let firstName: String
     let lastName: String
@@ -64,7 +69,7 @@ class UserServices: NSObject {
                     }
                 })
             } else {
-                completion(false, nil)
+                completion(false, error)
             }
         }
     }

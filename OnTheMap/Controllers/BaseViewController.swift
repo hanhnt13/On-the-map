@@ -26,4 +26,17 @@ class BaseViewController: UIViewController {
     func redirectToFindLocation(sender: Any?) {
         performSegue(withIdentifier: "findLocation", sender: nil)
     }
+    
+    func logout() {
+        UserServices.shared.logout { [weak self] error in
+            DispatchQueue.main.async {
+                guard let error = error else {
+                    self?.navigationController?.dismiss(animated: true)
+                    return
+                }
+                
+                self?.showAlert(message: error.localizedDescription, title: "Logout Fail")
+            }
+        }
+    }
 }

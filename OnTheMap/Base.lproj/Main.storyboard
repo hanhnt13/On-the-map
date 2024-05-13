@@ -244,14 +244,14 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="MU8-w5-84T">
-                        <barButtonItem key="leftBarButtonItem" image="icon_pin" id="sVa-W8-RGv">
+                        <barButtonItem key="leftBarButtonItem" title="Logout" id="xzM-JG-ehT">
                             <connections>
-                                <action selector="didTapPinLocation:" destination="Y0N-9w-NFm" id="BXq-7t-2p2"/>
+                                <action selector="didTapLogout:" destination="Y0N-9w-NFm" id="gJu-jk-YHf"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" image="icon_refresh" id="xzM-JG-ehT">
+                        <barButtonItem key="rightBarButtonItem" image="icon_pin" id="sVa-W8-RGv">
                             <connections>
-                                <action selector="didTapRefresh:" destination="Y0N-9w-NFm" id="gJu-jk-YHf"/>
+                                <action selector="didTapPinLocation:" destination="Y0N-9w-NFm" id="BXq-7t-2p2"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -461,7 +461,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Ldg-Mn-5KL"/>
+        <segue reference="2SL-07-1qN"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="icon_listview-deselected" width="75" height="50"/>
@@ -469,7 +469,6 @@
         <image name="icon_mapview-deselected" width="75" height="50"/>
         <image name="icon_mapview-selected" width="75" height="50"/>
         <image name="icon_pin" width="24" height="24"/>
-        <image name="icon_refresh" width="24" height="24"/>
         <image name="icon_world" width="52" height="67"/>
         <image name="logo-u" width="62" height="62"/>
         <systemColor name="secondaryLabelColor">

@@ -62,8 +62,8 @@ class MapViewController: BaseViewController {
         redirectToFindLocation(sender: sender)
     }
     
-    @IBAction func didTapRefresh(_ sender: Any) {
-        getStudentsPins()
+    @IBAction func didTapLogout(_ sender: Any) {
+        logout()
     }
 }
 

@@ -14,7 +14,7 @@ class MapViewController: BaseViewController {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     let service = LocationServices.shared
-    var locations = [StudentInformation]()
+    let studenData = StudentsData.sharedInstance()
     var annotations = [MKPointAnnotation]()
     
     override func viewDidLoad() {
@@ -30,25 +30,29 @@ class MapViewController: BaseViewController {
     func getStudentsPins() {
         activityIndicator.startAnimating()
         LocationServices.shared.getStudentLocations() { [weak self] locations, error in
-            self?.mapView.removeAnnotations(self?.annotations ?? [])
-            self?.annotations.removeAll()
-            self?.locations = locations ?? []
-            for dictionary in locations ?? [] {
-                let lat = CLLocationDegrees(dictionary.latitude ?? 0.0)
-                let long = CLLocationDegrees(dictionary.longitude ?? 0.0)
-                let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
-                let first = dictionary.firstName
-                let last = dictionary.lastName
-                let mediaURL = dictionary.mediaURL
-                let annotation = MKPointAnnotation()
-                annotation.coordinate = coordinate
-                annotation.title = "\(first) \(last)"
-                annotation.subtitle = mediaURL
-                self?.annotations.append(annotation)
-            }
             DispatchQueue.main.async {
-                self?.mapView.addAnnotations(self?.annotations ?? [])
                 self?.activityIndicator.stopAnimating()
+                guard let locations = locations else {
+                    self?.showAlert(message: error?.localizedDescription ?? "Can't get location", title: "Get Location Fail")
+                    return
+                }
+                self?.mapView.removeAnnotations(self?.annotations ?? [])
+                self?.annotations.removeAll()
+                self?.studenData.students = locations
+                for dictionary in locations {
+                    let lat = CLLocationDegrees(dictionary.latitude ?? 0.0)
+                    let long = CLLocationDegrees(dictionary.longitude ?? 0.0)
+                    let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
+                    let first = dictionary.firstName
+                    let last = dictionary.lastName
+                    let mediaURL = dictionary.mediaURL
+                    let annotation = MKPointAnnotation()
+                    annotation.coordinate = coordinate
+                    annotation.title = "\(first) \(last)"
+                    annotation.subtitle = mediaURL
+                    self?.annotations.append(annotation)
+                }
+                self?.mapView.addAnnotations(self?.annotations ?? [])
             }
         }
     }

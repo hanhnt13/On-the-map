@@ -13,6 +13,12 @@ class LoginViewController: BaseViewController {
     @IBOutlet weak var txtPassword: UITextField!
     
     let userService = UserServices.shared
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        txtEmail.text = nil
+        txtPassword.text = nil
+    }
 
     @IBAction func didTapLogin(_ sender: Any) {
         guard let email = txtEmail.text, !email.isEmpty else {
@@ -26,12 +32,12 @@ class LoginViewController: BaseViewController {
         }
         
         userService.login(email: email, password: passWord) { [weak self] success, error in
-            if success {
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                if success {
                     self?.performSegue(withIdentifier: "showMap", sender: nil)
+                } else {
+                    self?.showAlert(message: "Please enter valid credentials.", title: "Login Error")
                 }
-            } else {
-                self?.showAlert(message: "Please enter valid credentials.", title: "Login Error")
             }
         }
     }

@@ -16,6 +16,7 @@ enum Method: String {
     case post = "POST"
     case put = "PUT"
     case get = "GET"
+    case delete = "DELETE"
 }
 
 class Services {

@@ -47,7 +47,7 @@ class LocationServices: NSObject {
             if let response = response {
                 completion(response.results, nil)
             } else {
-                completion([], error)
+                completion(nil, error)
             }
         }
     }

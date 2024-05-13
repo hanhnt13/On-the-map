@@ -84,4 +84,31 @@ class UserServices: NSObject {
             }
         }
     }
+    
+    func logout(completion: @escaping (Error?) -> Void) {
+        guard let url = URL(string: Endpoints.login.stringValue) else {
+            return
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = Method.delete.rawValue
+        var xsrfCookie: HTTPCookie? = nil
+        let sharedCookieStorage = HTTPCookieStorage.shared
+        for cookie in sharedCookieStorage.cookies! {
+            if cookie.name == "XSRF-TOKEN" { xsrfCookie = cookie }
+        }
+        if let xsrfCookie = xsrfCookie {
+            request.setValue(xsrfCookie.value, forHTTPHeaderField: "X-XSRF-TOKEN")
+        }
+        let task = URLSession.shared.dataTask(with: request) {[weak self] _, _, error in
+            guard let error = error else {
+                self?.currentUser = User()
+                StudentsData.sharedInstance().students = []
+                completion(nil)
+                return
+            }
+            
+            completion(error)
+        }
+        task.resume()
+    }
 }

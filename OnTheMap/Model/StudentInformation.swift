@@ -54,3 +54,16 @@ struct StudentInformation: Codable {
 struct StudentsLocations: Codable {
     let results: [StudentInformation]
 }
+
+class StudentsData: NSObject {
+    
+    var students = [StudentInformation]()
+    
+    class func sharedInstance() -> StudentsData {
+        struct Singleton {
+            static var sharedInstance = StudentsData()
+        }
+        return Singleton.sharedInstance
+    }
+    
+}

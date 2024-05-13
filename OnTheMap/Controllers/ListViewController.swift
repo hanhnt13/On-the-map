@@ -12,7 +12,7 @@ class ListViewController: BaseViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
-    var informations = [StudentInformation]()
+    let studenData = StudentsData.sharedInstance()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,9 +23,14 @@ class ListViewController: BaseViewController {
     
     func getInformations() {
         activityIndicator.startAnimating()
-        LocationServices.shared.getStudentLocations() {[weak self] informations, error in
-            self?.informations = informations ?? []
+        LocationServices.shared.getStudentLocations() {[weak self] locations, error in
             DispatchQueue.main.async {
+                guard let locations = locations else {
+                    self?.activityIndicator.stopAnimating()
+                    self?.showAlert(message: error?.localizedDescription ?? "Can't get location", title: "Get Location Fail")
+                    return
+                }
+                self?.studenData.students = locations
                 self?.tableView.reloadData()
                 self?.activityIndicator.stopAnimating()
             }
@@ -36,14 +41,23 @@ class ListViewController: BaseViewController {
         redirectToFindLocation(sender: sender)
     }
     
-    @IBAction func didTapRefresh(_ sender: Any) {
-        getInformations()
+    @IBAction func didTapLogout(_ sender: Any) {
+        UserServices.shared.logout { [weak self] error in
+            DispatchQueue.main.async {
+                guard let error = error else {
+                    self?.navigationController?.dismiss(animated: true)
+                    return
+                }
+                
+                self?.showAlert(message: error.localizedDescription, title: "Logout Fail")
+            }
+        }
     }
 }
 
 extension ListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return informations.count
+        return studenData.students.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -51,14 +65,14 @@ extension ListViewController: UITableViewDelegate, UITableViewDataSource {
             return UITableViewCell()
         }
         
-        let information = informations[indexPath.row]
+        let information = studenData.students[indexPath.row]
         cell.lblTitle.text = "\(information.firstName)" + " " + "\(information.lastName)"
         cell.lblDetail?.text = "\(information.mediaURL ?? "")"
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let information = informations[indexPath.row]
+        let information = studenData.students[indexPath.row]
         guard let mediaURL = information.mediaURL else {
             showAlert(message: "Cannot open link.", title: "Invalid Link")
             return

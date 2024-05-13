@@ -190,14 +190,14 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="pOT-d5-kc6">
-                        <barButtonItem key="leftBarButtonItem" image="icon_pin" id="XrH-rl-dzv">
+                        <barButtonItem key="leftBarButtonItem" title="Logout" id="5Nt-RV-WzW">
                             <connections>
-                                <action selector="didTapPinLocation:" destination="6Cx-Lb-Z8t" id="a6Y-M5-fgW"/>
+                                <action selector="didTapLogout:" destination="6Cx-Lb-Z8t" id="itD-rv-JgO"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" image="icon_refresh" id="5Nt-RV-WzW">
+                        <barButtonItem key="rightBarButtonItem" image="icon_pin" id="XrH-rl-dzv">
                             <connections>
-                                <action selector="didTapRefresh:" destination="6Cx-Lb-Z8t" id="itD-rv-JgO"/>
+                                <action selector="didTapPinLocation:" destination="6Cx-Lb-Z8t" id="a6Y-M5-fgW"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -461,7 +461,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="2SL-07-1qN"/>
+        <segue reference="Ldg-Mn-5KL"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="icon_listview-deselected" width="75" height="50"/>
